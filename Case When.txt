@@ -1,0 +1,34 @@
+SELECT loc,
+       CASE loc
+          WHEN 'NEW YORK' THEN 'EASTERN'
+          WHEN 'BOSTON' THEN 'EASTERN'
+          WHEN 'DALLAS' THEN 'CENTRAL'
+          WHEN 'LOS ANGELES' THEN 'WESTERN'
+          ELSE 'UNKNOWN'
+       END AS region
+  FROM dept;
+-------------------------------------------------------------------
+SELECT 
+   CASE mgr
+      WHEN NULL THEN 'Tall,Great Hair,Good Smile'
+      ELSE 'Probably has cooties'
+   END AS charisma_level
+FROM emp;
+--------------------------------------------------------------------
+SELECT DECODE(mgr, NULL, 'Tall,Great Hair,Good Smile', 'Probably has cooties') AS charisma_level
+  FROM emp;
+--------------------------------------------------------------------
+SELECT ename,
+       CASE
+          WHEN ename = 'KING' THEN 'Paid Just Right'
+          WHEN JOB = 'MANAGER' THEN
+             CASE ename
+                WHEN 'BLAKE' THEN 'No Adjustment (nepotism check)'
+                ELSE 
+	       'Adjust Pay by -25%'
+             END
+          WHEN sal > (SELECT (sal/2) FROM emp WHERE JOB = 'PRESIDENT') THEN 'Adjust Pay by -50%'
+          ELSE
+             'No Adjustment'
+       END AS reduce_payroll
+  FROM emp;

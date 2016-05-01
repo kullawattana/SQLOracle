@@ -1,0 +1,45 @@
+SELECT ename emp_name, job job_name, dname dept_name,loc location
+FROM fyzxx_employee a, fyzxx_department b
+WHERE a.deptno = b.deptno
+ORDER BY b.deptno, a.sal DESC;
+--------------------------------------------------------------------------------------------------------------------------------
+SELECT emp.ename emp_name, emp.job job_name, dept.dname dept_name, dept.loc location
+FROM fyzxx_employee emp, fyzxx_department dept
+WHERE emp.deptno = dept.deptno
+ORDER BY dept.deptno, emp.sal DESC;
+---------------------------------------------------------------------------------------------------------------------------------
+SELECT "FYZXX_EMPLOYEE"."ENAME" "EMP_NAME",
+       "FYZXX_EMPLOYEE"."JOB" "JOB_NAME",
+       "FYZXX_DEPARTMENT"."DNAME" "DEPT_NAME",
+       "FYZXX_DEPARTMENT"."LOC"   "LOCATION"
+  FROM "FYZXX_EMPLOYEE",
+       "FYZXX_DEPARTMENT"
+ WHERE "FYZXX_EMPLOYEE"."DEPTNO" = "FYZXX_DEPARTMENT"."DEPTNO"
+ ORDER BY "FYZXX_DEPARTMENT"."DEPTNO",
+          "FYZXX_EMPLOYEE"."SAL" DESC;
+----------------------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE TYPE type_currency_tab AS TABLE OF NUMBER(12,4)
+/
+SET SERVEROUTPUT ON
+DECLARE
+   l_prices type_currency_tab := type_currency_tab(5.50, 10.95, 995.99);
+BEGIN
+   FOR lrec IN (SELECT curr.COLUMN_VALUE AS price
+                FROM TABLE(l_prices) curr
+               WHERE curr.COLUMN_VALUE > 100) LOOP
+      dbms_output.put_line('Large Price: ' || lrec.price);
+   END LOOP;
+END;
+/
+-----------------------------------------------------------------------------------------------------------------------------------
+INSERT INTO emp_audit
+SELECT USER, SYSDATE, e.*
+FROM   emp e
+WHERE  emp_no = i_emp_no;
+-----------------------------------------------------------------------------------------------------------------------------------
+SELECT empno, socsecno ssn
+  FROM emp;
+SELECT empno, socsecno AS ssn
+  FROM emp;
+SELECT empno,socsecno AS "SSN"
+  FROM emp;

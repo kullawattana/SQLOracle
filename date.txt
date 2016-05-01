@@ -1,0 +1,27 @@
+DROP TABLE myobj;
+CREATE TABLE myobj AS SELECT * FROM all_objects;
+CREATE INDEX myobj_created_idx ON myobj(created);
+BEGIN dbms_stats.gather_table_stats(USER,'MYOBJ',cascade => TRUE); END;
+
+------------------------------------------------------------------------------------------
+SELECT object_name, object_type FROM myobj
+WHERE created = (SELECT MAX(created) FROM myobj);
+------------------------------------------------------------------------------------------
+SELECT object_name, object_type
+FROM myobj
+WHERE created = (SELECT /*+ INDEX_DESC(myobj myobj_created_idx) */ created FROM myobj WHERE ROWNUM <= 1);
+------------------------------------------------------------------------------------------
+For example, if you want to add a day, you add 1 to a date:
+
+SELECT SYSDATE, SYSDATE + 1 FROM dual;
+If you want to add an hour, it has to be expressed in terms of a day. Since an hour is 1/24th of a day, it is done like this:
+
+SELECT SYSDATE, SYSDATE + 1/24 FROM dual;
+If you want to add 10 minutes, again do it in terms of a day:
+
+SELECT SYSDATE, SYSDATE + 10/1440 FROM dual;
+------------------------------------------------------------------------------------------
+SELECT SYSDATE AS OLD, (ADD_MONTHS(SYSDATE, '2') + 3 + 10/24 + 22/1440 + 13/86400) AS NEW FROM dual;
+And here is how it is done using the more expressive, readable and maintainable intervals:
+
+SELECT SYSDATE AS OLD, (SYSDATE + INTERVAL '2' MONTH + INTERVAL '3 10:22:13' DAY TO SECOND) AS NEW FROM dual;

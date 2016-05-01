@@ -1,0 +1,68 @@
+SELECT loc,
+       DECODE(loc,
+              'NEW YORK','EASTERN',
+              'BOSTON','EASTERN',
+              'DALLAS','CENTRAL',
+              'LOS ANGELES','WESTERN',
+              'UNKNOWN') AS region
+  FROM dept;
+
+LOC           REGION
+------------- -------
+NEW YORK      EASTERN
+DALLAS        CENTRAL
+CHICAGO       UNKNOWN
+BOSTON        EASTERN
+
+------------------------------------------------------------------------------------------------------------
+SELECT empno, ename, sal,
+       DECODE(SIGN(sal - 3000), 1, 'MANAGER', 'NON-MANAGER') AS emp_type
+  FROM emp;
+
+
+     EMPNO ENAME             SAL EMP_TYPE
+---------- ---------- ---------- -----------
+      7369 SMITH             800 NON-MANAGER
+      7499 ALLEN            1600 NON-MANAGER
+      7521 WARD             1250 NON-MANAGER
+      7566 JONES            2975 NON-MANAGER
+      7654 MARTIN           1250 NON-MANAGER
+      7698 BLAKE            2850 NON-MANAGER
+      7782 CLARK            2450 NON-MANAGER
+      7788 SCOTT            3000 NON-MANAGER
+      7839 KING             5000 MANAGER
+      7844 TURNER           1500 NON-MANAGER
+      7876 ADAMS            1100 NON-MANAGER
+------------------------------------------------------------------------------------------------------------
+SELECT COUNT(*), SUM(sal)
+FROM   emp
+WHERE  deptno  =  20;
+
+SELECT COUNT(*), SUM(sal)
+FROM   emp
+WHERE  deptno  =  30;
+
+SELECT COUNT(DECODE(deptno, 20, 'X',    NULL)) D20_count,
+       SUM  (DECODE(deptno, 20, sal, NULL)) D20_sal,
+       COUNT(DECODE(deptno, 30, 'X',    NULL)) D30_count,
+       SUM  (DECODE(deptno, 30, sal, NULL)) D30_sal
+FROM   emp;
+-------------------------------------------------------------------------------------------------------------
+SELECT . . .
+ FROM   emp
+ORDER 
+       BY DECODE(:BLK.SEQN_FLD 'E', emp_no, 'D', dept_no);
+
+SELECT . . .
+ FROM   emp
+GROUP
+      BY DECODE(i_grouping_col,'E',emp_no,'D',dept_no);
+-------------------------------------------------------------------------------------------------------------
+SELECT deptno,
+       MAX(DECODE(JOB, 'ANALYST', 'Y', NULL)) AS analyst,
+       MAX(DECODE(JOB, 'CLERK', 'Y', NULL)) AS clerk,
+       MAX(DECODE(JOB, 'MANAGER', 'Y', NULL)) AS manager,
+       MAX(DECODE(JOB, 'SALESMAN', 'Y', NULL)) AS salesman,
+       MAX(DECODE(JOB, 'PRESIDENT', 'Y', NULL)) AS president
+  FROM emp t
+ GROUP BY deptno;

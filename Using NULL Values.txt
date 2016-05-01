@@ -1,0 +1,41 @@
+-DECODE parameters (where NULL is a value within the comparison list)
+
+SELECT  DECODE (sex,'M','Male','F','Female',NULL,'Unknown') Sex
+FROM    emp
+WHERE   emp_no = 1234
+
+EMP_NO    SEX
+------    -----
+ 1234     Male
+-----------------------------------------------------------------------------------------------
+-GROUP BY parameters (where several of rows have a column with a null value)
+
+SELECT  sex, count(*)
+FROM    emp
+GROUP BY sex
+
+SEX     Count(*)
+-----   --------
+M         3214
+F          956
+null        12
+-----------------------------------------------------------------------------------------------
+-DISTINCT parameters (where a number of rows have a column with a null value)
+
+SELECT  count(DISTINCT sex)
+FROM    emp
+
+Count(distinct *)
+-----------------
+       3
+------------------------------------------------------------------------------------------------
+-UNION/MINUS/INTERSECT columns (where a number of rows have a column with a null value)
+
+SELECT  emp_no,  sex
+FROM    emp
+MINUS
+SELECT  emp_no,  null
+FROM    emp_history
+
+sql> No rows selected
+

@@ -1,0 +1,20 @@
+WITH subq
+AS
+(
+SELECT table_name,
+       index_name,
+       column_name,
+       ROW_NUMBER() OVER(PARTITION BY index_name ORDER BY column_position) rn,
+       COUNT(*) OVER(PARTITION BY index_name) cnt
+  FROM user_ind_columns
+)
+ SELECT table_name,
+        index_name,
+        LTRIM(SYS_CONNECT_BY_PATH(column_name, ','), ',') cols_in_index
+   FROM subq
+  WHERE rn = cnt
+  START WITH rn = 1
+ CONNECT BY PRIOR index_name = index_name
+        AND PRIOR rn = rn - 1
+  ORDER BY table_name,
+           index_name;

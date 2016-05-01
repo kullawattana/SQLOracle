@@ -1,0 +1,12 @@
+SELECT 'SELECT DECODE(e.job,''' || :top_title ||''',''TOP'',e.job) '|| 'FROM ' || :table_nm || ' e '|| 'WHERE e.ename LIKE ''%'||:wildcard_str || '%''' as stmt…
+SELECT q'~SELECT DECODE(e.job,'||:top_title||','TOP',e.job) FROM '||:table_nm||' e' WHERE e.ename LIKE '%'||:wildcard_str||'%'~' as stmt…
+-----------------------------------------------------------------------------------------------
+SELECT 'PROD', table_name,column_name,data_type,data_length,data_precision,data_scale,nullable,column_id,char_used FROM user_tab_columns
+	UNION ALL
+	SELECT 'TEST', table_name,column_name,data_type,data_length, data_precision,data_scale,nullable,column_id,char_used FROM user_tab_columns@test_db
+ORDER BY 2,3,9,1;
+-----------------------------------------------------------------------------------------------
+INSERT INTO...SELECT...UNISTR(REPLACE(i_uni_str,'\u','\')) FROM ...
+-----------------------------------------------------------------------------------------------
+SELECT TRANSLATE('A1B2C3','1234567890','') FROM dual;
+SELECT TRANSLATE('A1B2C3','x1234567890','x') FROM dual;

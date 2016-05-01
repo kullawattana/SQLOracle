@@ -1,0 +1,52 @@
+SQL> CREATE TABLE tab1 (ID NUMBER NOT NULL PRIMARY KEY, val1 VARCHAR2(10));
+ 
+Table created
+ 
+SQL> CREATE TABLE tab2 (ID NUMBER NOT NULL PRIMARY KEY, val2 VARCHAR2(10));
+ 
+Table created
+ 
+SQL> INSERT INTO tab1 VALUES(1,'Hello');
+ 
+1 row inserted
+ 
+SQL> INSERT INTO tab2 VALUES(1,'World');
+ 
+1 row inserted
+ 
+SQL> commit;
+ 
+Commit complete
+ 
+SQL>
+SELECT id, val1, id, val2
+  FROM tab1, tab2
+ WHERE id = id;
+
+ORA-00918: column ambiguously defined
+ 
+SQL>
+SELECT id, val1, id, val2
+  FROM tab1 t1, tab2 t2
+ WHERE t1.id = t2.id;
+
+ORA-00918: column ambiguously defined
+ 
+SQL>
+SELECT t1.id, val1, t2.id, val2
+  FROM tab1 t1, tab2 t2
+ WHERE t1.id = t2.id;
+ 
+        ID VAL1               ID VAL2
+---------- ---------- ---------- ----------
+         1 Hello               1 World
+		 
+--------------------------------------------------------------------------------------------------------------------------
+SQL>
+SELECT t1.id tab1_id, t1.val1, t2.id tab2_id, t2.val2
+  FROM tab1 t1, tab2 t2
+ WHERE t1.id = t2.id;
+ 
+   TAB1_ID VAL1          TAB2_ID VAL2
+---------- ---------- ---------- ----------
+         1 Hello               1 World

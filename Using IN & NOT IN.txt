@@ -1,0 +1,29 @@
+SELECT SUM(e.sal)
+  FROM emp e
+ WHERE e.deptno IN (SELECT d.deptno
+                      FROM dept d
+                     WHERE loc IN ('NEW YORK', 'CHICAGO'))
+   AND e.hiredate >= TO_DATE('1970 Jan 01', 'YYYY MON DD');
+
+SELECT SUM(e.sal)
+  FROM emp  e,
+       dept d
+ WHERE e.deptno = d.deptno
+   AND d.loc IN ('NEW YORK', 'CHICAGO')
+   AND e.hiredate >= TO_DATE('1970 Jan 01', 'YYYY MON DD');
+
+Or
+
+SELECT SUM(e.sal)
+  FROM emp e
+  JOIN dept d ON e.deptno = d.deptno
+ WHERE d.loc IN ('NEW YORK', 'CHICAGO')
+   AND e.hiredate >= TO_DATE('1970 Jan 01', 'YYYY MON DD');
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT * FROM emp WHERE mgr IN (7566, NULL);
+SELECT * FROM emp WHERE mgr NOT IN (7566,NULL);
+SELECT e.* FROM emp e WHERE e.mgr 
+	NOT IN (SELECT e2.empno FROM emp e2
+                      WHERE e2.empno IS NOT NULL
+                        AND e2.empno = 7566);

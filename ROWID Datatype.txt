@@ -1,0 +1,11 @@
+CREATE TABLE rowid_example (id  NUMBER PRIMARY KEY, loc UROWID);
+
+ SELECT ROWID, . . .
+    INTO   :emp_rowid, . . .
+    FROM   emp
+    WHERE  emp.emp_no = 56722
+    FOR UPDATE;
+
+    UPDATE emp
+    SET    emp.name = . . .
+    WHERE  ROWID = :emp_rowid ;
